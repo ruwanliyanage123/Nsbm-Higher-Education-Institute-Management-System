@@ -2,10 +2,12 @@ package nsbm_higher_education.student;
 
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import nsbm_higher_education.DatabaseConnection;
 
 public class AddUndergraduate extends javax.swing.JInternalFrame {
     private String findCourseForIdNumber ="";
+    private String idNumber;
     Connection connection = null;
     public AddUndergraduate() {
         initComponents();
@@ -16,6 +18,31 @@ public class AddUndergraduate extends javax.swing.JInternalFrame {
     funtion 01
     calculate the id number
     **/
+    String calculateIdNumber(){
+        idNumber ="UN"+findCourseForIdNumber;
+        PreparedStatement ps;
+        ResultSet rs;
+        int updatingNumber =0;
+        try{
+            String query = "SELECT number FROM undergraduate_update_details";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                updatingNumber = Integer.parseInt(rs.getString(1))+1;
+            }
+            query = "UPDATE `undergraduate_update_details` SET `number`=?";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setInt(1,updatingNumber);
+            ps.executeUpdate();
+            //create id number
+            idNumber += Integer.toString(updatingNumber);
+            
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return idNumber;
+    }
     
     /*
     funtion 02
@@ -466,23 +493,29 @@ public class AddUndergraduate extends javax.swing.JInternalFrame {
 
     private void ENGINEERINGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ENGINEERINGActionPerformed
        findCourseForIdNumber = "EN";
-       message_box.setText("HI! "+name.getText()+" your id number is :"+findCourseForIdNumber);
+       calculateIdNumber();
+       message_box.setText("HI! "+name.getText()+" your id number is :"+idNumber);
        addForUnderGraduateBasicDetails();
        addForUnderGraduateAlDetails();
+       
     }//GEN-LAST:event_ENGINEERINGActionPerformed
 
     private void BUSINESSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BUSINESSActionPerformed
         findCourseForIdNumber ="BU";
-        message_box.setText("HI! "+name.getText()+" your id number is :"+findCourseForIdNumber);
+        calculateIdNumber();
+        message_box.setText("HI! "+name.getText()+" your id number is :"+idNumber);
         addForUnderGraduateBasicDetails();
         addForUnderGraduateAlDetails();
+        
     }//GEN-LAST:event_BUSINESSActionPerformed
 
     private void COMPUTINGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMPUTINGActionPerformed
         findCourseForIdNumber = "CO";
-        message_box.setText("HI! "+name.getText()+" your id number is :"+findCourseForIdNumber);
+        calculateIdNumber();
+        message_box.setText("HI! "+name.getText()+" your id number is :"+idNumber);
         addForUnderGraduateBasicDetails();
         addForUnderGraduateAlDetails();
+        
     }//GEN-LAST:event_COMPUTINGActionPerformed
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
@@ -501,6 +534,7 @@ public class AddUndergraduate extends javax.swing.JInternalFrame {
         al_index.setText("");
         message_box.setText("");
         nic.setText("");
+        idNumber ="";
     }//GEN-LAST:event_resetActionPerformed
 
 
