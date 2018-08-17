@@ -34,7 +34,25 @@ public class AddUndergraduate extends javax.swing.JInternalFrame {
         }
     
     }
+    /*
+    funtion 03
+    add details for the undergraduate_al_details table
+    **/
+    void addForUnderGraduateAlDetails(){ 
+        PreparedStatement ps;
+        try{
+            String query = "INSERT INTO `undergraduate_al_details`( `al_index`,`al_subject`, `grade`)"+ 
+                    "VALUES('"+al_index.getText()+"','"+al_subject1.getText()+"','"+grade1.getText()+"'),"
+                    + "('"+al_index.getText()+"','"+al_subject2.getText()+"','"+grade2.getText()+"'),"
+                     + "('"+al_index.getText()+"','"+al_subject3.getText()+"','"+grade3.getText()+"') ";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.executeUpdate();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     
+    }
     
 
     
@@ -450,21 +468,21 @@ public class AddUndergraduate extends javax.swing.JInternalFrame {
        findCourseForIdNumber = "EN";
        message_box.setText("HI! "+name.getText()+" your id number is :"+findCourseForIdNumber);
        addForUnderGraduateBasicDetails();
-       
+       addForUnderGraduateAlDetails();
     }//GEN-LAST:event_ENGINEERINGActionPerformed
 
     private void BUSINESSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BUSINESSActionPerformed
         findCourseForIdNumber ="BU";
         message_box.setText("HI! "+name.getText()+" your id number is :"+findCourseForIdNumber);
         addForUnderGraduateBasicDetails();
-        
+        addForUnderGraduateAlDetails();
     }//GEN-LAST:event_BUSINESSActionPerformed
 
     private void COMPUTINGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMPUTINGActionPerformed
         findCourseForIdNumber = "CO";
         message_box.setText("HI! "+name.getText()+" your id number is :"+findCourseForIdNumber);
         addForUnderGraduateBasicDetails();
-        
+        addForUnderGraduateAlDetails();
     }//GEN-LAST:event_COMPUTINGActionPerformed
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
