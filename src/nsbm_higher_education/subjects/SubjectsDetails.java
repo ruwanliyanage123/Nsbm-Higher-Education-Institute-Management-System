@@ -22,7 +22,7 @@ public class SubjectsDetails extends javax.swing.JFrame {
         
         PreparedStatement ps;
         ResultSet rs;
-        int updatingNumber =0;
+        
         try{
             String query = "SELECT * FROM `subjects` where subject_code=?";
             ps = (PreparedStatement) connection.prepareStatement(query);
@@ -35,6 +35,24 @@ public class SubjectsDetails extends javax.swing.JFrame {
                 semester.setText(rs.getString(5));
                 
             }
+        }
+        catch(NumberFormatException | SQLException e){
+        }
+    }
+    /**
+     *function 1
+     * add function for search subjects 
+     */
+    void deleteSubjects(){
+        
+        PreparedStatement ps;
+        ResultSet rs;
+        int updatingNumber =0;
+        try{
+            String query = "DELETE FROM `subjects` WHERE  subject_code=?";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setString(1, subject_code.getText());
+            ps.executeUpdate();
         }
         catch(NumberFormatException | SQLException e){
         }
@@ -287,11 +305,15 @@ public class SubjectsDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_ADDActionPerformed
 
     private void CLEARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CLEARActionPerformed
-        // TODO add your handling code here:
+                subject_code.setText("");
+                subject_name.setText("");
+                number_of_credits.setText("");
+                fee.setText("");
+                semester.setText("");
     }//GEN-LAST:event_CLEARActionPerformed
 
     private void DELETEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DELETEActionPerformed
-        // TODO add your handling code here:
+        deleteSubjects();
     }//GEN-LAST:event_DELETEActionPerformed
 
     private void SEARCHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SEARCHActionPerformed
