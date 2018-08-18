@@ -8,6 +8,8 @@ import javax.swing.table.DefaultTableModel;
 import nsbm_higher_education.DatabaseConnection;
 
 public class Result extends javax.swing.JFrame {
+    public float totalMarks =0;
+    public String grad;
     Connection connection = null;
     public Result() {
         initComponents();
@@ -109,7 +111,7 @@ public class Result extends javax.swing.JFrame {
         
         PreparedStatement ps;
         ResultSet rs;
-        float totalMarks =0;
+        
         int examMarks =0;
         int assignmentPercent =0;
         int examPercent =0;
@@ -127,7 +129,75 @@ public class Result extends javax.swing.JFrame {
         return totalMarks;
     }
     
-
+    /*
+    funtion 04
+    find total marks
+    **/
+    public String getGrade(float marks){
+        if((90<=marks)&&(marks<=100)){return "A+";}
+        if((80<=marks)&&(marks<=89)){return "A";}
+        if((75<=marks)&&(marks<=79)){return "A-";}
+        if((70<=marks)&&(marks<=74)){return "B+";}
+        
+        if((65<=marks)&&(marks<=69)){return "B";}
+        if((60<=marks)&&(marks<=64)){return "B-";}
+        if((55<=marks)&&(marks<=59)){return "C+";}
+        if((50<=marks)&&(marks<=54)){return "C";}
+        if((45<=marks)&&(marks<=49)){return "C-";}
+        if((40<=marks)&&(marks<=44)){return "D+";}
+        if((30<=marks)&&(marks<=39)){return "D";}
+        if((20<=marks)&&(marks<=29)){return "D-";}
+        if((00<=marks)&&(marks<=19)){return "E";}
+        else{
+            return "false";
+        }
+    }
+     /*
+    funtion 04
+    add final marks for database
+    **/
+    void addForExamMarks(){
+        PreparedStatement ps;
+        ResultSet rs;
+        String totalMarksAsString;
+        totalMarksAsString  =  Float.toString(totalMarks); 
+        try{
+            String query = "INSERT INTO `exam_marks`(`id`, `subject_code`, `marks`, `grade`)  VALUES(?,?,?,?)";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setString(1, id.getText());
+            ps.setString(2, subject_code.getText());
+            ps.setString(3, totalMarksAsString);
+            ps.setString(4, grad);
+          
+            ps.executeUpdate();
+        }
+        catch(NumberFormatException | SQLException e){
+            e.printStackTrace();
+        }
+    }
+    /**
+     *function 1
+     * add function for search subjects 
+     */
+    void searchSubjects(){
+        
+        PreparedStatement ps;
+        ResultSet rs;
+        
+        try{
+            String query = "SELECT * FROM `exam_marks` where subject_code=? and id =?";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setString(1, subject_code.getText());
+            ps.setString(2, id.getText());
+            rs = ps.executeQuery();
+            if(rs.next()){
+                message1.setText(rs.getString(3));
+                message2.setText(rs.getString(4));
+            }
+        }
+        catch(NumberFormatException | SQLException e){
+        }
+    }
     
     
     @SuppressWarnings("unchecked")
@@ -175,11 +245,11 @@ public class Result extends javax.swing.JFrame {
 
         jLabel2.setText("SUBJECT CODE");
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(454, 120, 80, 14);
+        jLabel2.setBounds(490, 160, 80, 14);
 
         jLabel3.setText("STUDENT ID");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(470, 160, 70, 20);
+        jLabel3.setBounds(500, 120, 70, 20);
 
         jLabel4.setText("ASSIGNMENT MARKS");
         jPanel2.add(jLabel4);
@@ -218,7 +288,7 @@ public class Result extends javax.swing.JFrame {
             }
         });
         jPanel2.add(id);
-        id.setBounds(600, 150, 180, 30);
+        id.setBounds(600, 110, 180, 30);
 
         message2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,7 +320,7 @@ public class Result extends javax.swing.JFrame {
             }
         });
         jPanel2.add(subject_code);
-        subject_code.setBounds(600, 110, 180, 30);
+        subject_code.setBounds(600, 150, 180, 30);
 
         jLabel8.setText("EXAM PERCENTAGE");
         jPanel2.add(jLabel8);
@@ -435,12 +505,16 @@ public class Result extends javax.swing.JFrame {
 
     private void view_resultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_view_resultActionPerformed
         showValues();
+        searchSubjects();
     }//GEN-LAST:event_view_resultActionPerformed
 
     private void add_resultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_resultActionPerformed
-        float number = findTotalMarks();
-        String num = Float.toString(number);
+        float totalMark = findTotalMarks();
+        String num = Float.toString(totalMark);
         message1.setText("tolal:"+num);
+        grad = getGrade(totalMark);
+        message2.setText(grad);
+        addForExamMarks();
     }//GEN-LAST:event_add_resultActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
