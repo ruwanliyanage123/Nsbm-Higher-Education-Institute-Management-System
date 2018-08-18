@@ -73,6 +73,30 @@ public class Result extends javax.swing.JFrame {
             System.err.println(e);
         }
     }
+    /*
+    funtion 03
+    find total assignment marks
+    **/
+    int findTotalAssignmentMarks(){
+        PreparedStatement ps;
+        ResultSet rs;
+        int total = 0;
+        try{ 
+            String query = "select `marks` from assignment_marks where id =? and subject_code  =?";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setString(1,id.getText());
+            ps.setString(2,subject_code.getText());
+            rs = ps.executeQuery();
+            while(rs.next()){
+                total += Integer.parseInt(rs.getString(1));
+            }
+        }
+        catch(NumberFormatException | SQLException e){
+            e.printStackTrace();
+        }
+        return total;
+    }
+    
 
     
     
