@@ -77,10 +77,12 @@ public class Result extends javax.swing.JFrame {
     funtion 03
     find total assignment marks
     **/
-    int findTotalAssignmentMarks(){
+    float findTotalAssignmentMarks(){
         PreparedStatement ps;
         ResultSet rs;
         int total = 0;
+        int numberOfAssignment=0;
+        float averageTotal =0;
         try{ 
             String query = "select `marks` from assignment_marks where id =? and subject_code  =?";
             ps = (PreparedStatement) connection.prepareStatement(query);
@@ -89,12 +91,40 @@ public class Result extends javax.swing.JFrame {
             rs = ps.executeQuery();
             while(rs.next()){
                 total += Integer.parseInt(rs.getString(1));
+                numberOfAssignment++;
             }
+            averageTotal = (float)(total/numberOfAssignment);
         }
         catch(NumberFormatException | SQLException e){
             e.printStackTrace();
         }
-        return total;
+        
+        return averageTotal;
+    }
+    /*
+    funtion 04
+    find total marks
+    **/
+    float findTotalMarks(){
+        
+        PreparedStatement ps;
+        ResultSet rs;
+        float totalMarks =0;
+        int examMarks =0;
+        int assignmentPercent =0;
+        int examPercent =0;
+        float assignmentTotal =0;
+        try{ 
+            examMarks = Integer.parseInt(exam_marks.getText());
+            assignmentPercent =Integer.parseInt(assignment_percentage.getText());
+            examPercent =Integer.parseInt(exam_percentage.getText()); 
+            assignmentTotal = findTotalAssignmentMarks();//get total value
+            totalMarks = (float)(((examPercent*examMarks)/100)+((assignmentTotal*assignmentPercent)/100));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return totalMarks;
     }
     
 
@@ -408,7 +438,9 @@ public class Result extends javax.swing.JFrame {
     }//GEN-LAST:event_view_resultActionPerformed
 
     private void add_resultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_resultActionPerformed
-        // TODO add your handling code here:
+        float number = findTotalMarks();
+        String num = Float.toString(number);
+        message1.setText("tolal:"+num);
     }//GEN-LAST:event_add_resultActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
