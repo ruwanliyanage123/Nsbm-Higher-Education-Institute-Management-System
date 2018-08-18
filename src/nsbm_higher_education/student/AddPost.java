@@ -20,7 +20,7 @@ public class AddPost extends javax.swing.JInternalFrame {
     calculate the id number
     **/
     String calculateIdNumber(){
-        idNumber ="UN"+findCourseForIdNumber;
+        idNumber ="PO"+findCourseForIdNumber;
         PreparedStatement ps;
         ResultSet rs;
         int updatingNumber =0;
@@ -71,7 +71,7 @@ public class AddPost extends javax.swing.JInternalFrame {
         try{
             String query = "INSERT INTO `postgraduate_extra_details`( `id`,`institute`,`qualification`, `year`)"+ 
                     "VALUES('"+idNumber+"','"+institute1.getText()+"','"+qualification1.getText()+"','"+year1.getText()+"'),"
-                    + "('"+idNumber+"','"+institute2.getText()+"','"+qualification2.getText()+"','"+year2.getText()+"')";
+                    + "('"+idNumber+"','"+institute2.getText()+"','"+qualification2.getText()+"','"+subject2.getText()+"')";
                     
             ps = (PreparedStatement) connection.prepareStatement(query);
             ps.executeUpdate();
@@ -80,6 +80,29 @@ public class AddPost extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     
+    }
+    
+    /*
+    funtion 03
+    add details for the undergraduate_al_details table
+    **/
+    void addForSelectedSubjects(){ 
+        PreparedStatement ps;
+        try{
+            
+            String query = "INSERT INTO `selected_subjects`(`id`, `subject_code`, `semester`) "
+              + "VALUES('"+idNumber+"','"+subject1.getText()+"','"+semester.getText()+"'),"
+                    + "('"+idNumber+"','"+subject2.getText()+"','"+semester.getText()+"'),"
+                    + "('"+idNumber+"','"+subject3.getText()+"','"+semester.getText()+"'),"
+                    + "('"+idNumber+"','"+subject4.getText()+"','"+semester.getText()+"')";
+                    
+            
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -99,16 +122,16 @@ public class AddPost extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         BUSINESS = new javax.swing.JButton();
-        ENGINEERING3 = new javax.swing.JButton();
+        clear = new javax.swing.JButton();
         ENGINEER = new javax.swing.JButton();
-        ENGINEERING5 = new javax.swing.JButton();
+        back = new javax.swing.JButton();
         institute1 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         email = new javax.swing.JTextField();
         institute2 = new javax.swing.JTextField();
         year1 = new javax.swing.JTextField();
         qualification2 = new javax.swing.JTextField();
-        year2 = new javax.swing.JTextField();
+        subject2 = new javax.swing.JTextField();
         message1 = new javax.swing.JTextField();
         nic = new javax.swing.JTextField();
         dob = new javax.swing.JTextField();
@@ -117,6 +140,15 @@ public class AddPost extends javax.swing.JInternalFrame {
         phone_number = new javax.swing.JTextField();
         message2 = new javax.swing.JTextField();
         qualification1 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        semester = new javax.swing.JTextField();
+        subject4 = new javax.swing.JTextField();
+        subject3 = new javax.swing.JTextField();
+        year6 = new javax.swing.JTextField();
+        SEARCH = new javax.swing.JButton();
+        subject1 = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        enter1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
         jButton1.setText("jButton1");
@@ -189,9 +221,9 @@ public class AddPost extends javax.swing.JInternalFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(51, 255, 0));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("YEAR");
+        jLabel9.setText("ENTER YOUR SEMESTER NUMBER HERE");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(530, 340, 120, 15);
+        jLabel9.setBounds(1000, 420, 300, 15);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(51, 255, 0));
@@ -211,14 +243,15 @@ public class AddPost extends javax.swing.JInternalFrame {
         jPanel1.add(BUSINESS);
         BUSINESS.setBounds(360, 470, 100, 100);
 
-        ENGINEERING3.setAlignmentY(0.0F);
-        ENGINEERING3.addActionListener(new java.awt.event.ActionListener() {
+        clear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear.jpg"))); // NOI18N
+        clear.setAlignmentY(0.0F);
+        clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ENGINEERING3ActionPerformed(evt);
+                clearActionPerformed(evt);
             }
         });
-        jPanel1.add(ENGINEERING3);
-        ENGINEERING3.setBounds(440, 580, 100, 80);
+        jPanel1.add(clear);
+        clear.setBounds(430, 580, 90, 90);
 
         ENGINEER.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ENGINEE.jpg"))); // NOI18N
         ENGINEER.setAlignmentY(0.0F);
@@ -231,14 +264,15 @@ public class AddPost extends javax.swing.JInternalFrame {
         jPanel1.add(ENGINEER);
         ENGINEER.setBounds(200, 470, 100, 100);
 
-        ENGINEERING5.setAlignmentY(0.0F);
-        ENGINEERING5.addActionListener(new java.awt.event.ActionListener() {
+        back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/BASK.jpg"))); // NOI18N
+        back.setAlignmentY(0.0F);
+        back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ENGINEERING5ActionPerformed(evt);
+                backActionPerformed(evt);
             }
         });
-        jPanel1.add(ENGINEERING5);
-        ENGINEERING5.setBounds(270, 580, 100, 80);
+        jPanel1.add(back);
+        back.setBounds(260, 580, 100, 90);
 
         institute1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         institute1.setForeground(new java.awt.Color(255, 0, 0));
@@ -307,17 +341,17 @@ public class AddPost extends javax.swing.JInternalFrame {
         jPanel1.add(qualification2);
         qualification2.setBounds(290, 400, 250, 30);
 
-        year2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        year2.setForeground(new java.awt.Color(255, 0, 0));
-        year2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        year2.setBorder(null);
-        year2.addActionListener(new java.awt.event.ActionListener() {
+        subject2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        subject2.setForeground(new java.awt.Color(255, 0, 0));
+        subject2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        subject2.setBorder(null);
+        subject2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                year2ActionPerformed(evt);
+                subject2ActionPerformed(evt);
             }
         });
-        jPanel1.add(year2);
-        year2.setBounds(580, 400, 110, 30);
+        jPanel1.add(subject2);
+        subject2.setBounds(1190, 530, 110, 30);
 
         message1.setBackground(new java.awt.Color(0, 0, 0));
         message1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -417,6 +451,98 @@ public class AddPost extends javax.swing.JInternalFrame {
         jPanel1.add(qualification1);
         qualification1.setBounds(290, 360, 250, 30);
 
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(51, 255, 0));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel12.setText("YEAR");
+        jPanel1.add(jLabel12);
+        jLabel12.setBounds(530, 340, 120, 15);
+
+        semester.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        semester.setForeground(new java.awt.Color(255, 0, 0));
+        semester.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        semester.setBorder(null);
+        semester.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                semesterActionPerformed(evt);
+            }
+        });
+        jPanel1.add(semester);
+        semester.setBounds(1070, 460, 110, 30);
+
+        subject4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        subject4.setForeground(new java.awt.Color(255, 0, 0));
+        subject4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        subject4.setBorder(null);
+        subject4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subject4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(subject4);
+        subject4.setBounds(1190, 580, 110, 30);
+
+        subject3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        subject3.setForeground(new java.awt.Color(255, 0, 0));
+        subject3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        subject3.setBorder(null);
+        subject3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subject3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(subject3);
+        subject3.setBounds(1070, 580, 110, 30);
+
+        year6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        year6.setForeground(new java.awt.Color(255, 0, 0));
+        year6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        year6.setBorder(null);
+        year6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                year6ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(year6);
+        year6.setBounds(580, 400, 110, 30);
+
+        SEARCH.setText("SEARCH");
+        SEARCH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SEARCHActionPerformed(evt);
+            }
+        });
+        jPanel1.add(SEARCH);
+        SEARCH.setBounds(1190, 460, 110, 30);
+
+        subject1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        subject1.setForeground(new java.awt.Color(255, 0, 0));
+        subject1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        subject1.setBorder(null);
+        subject1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subject1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(subject1);
+        subject1.setBounds(1070, 530, 110, 30);
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(51, 255, 0));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel13.setText("ENTER YOUR SUBJECT CODES HERE");
+        jPanel1.add(jLabel13);
+        jLabel13.setBounds(990, 500, 300, 15);
+
+        enter1.setText("ENTER");
+        enter1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enter1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(enter1);
+        enter1.setBounds(1120, 630, 140, 40);
+
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 0, 0));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -467,9 +593,22 @@ public class AddPost extends javax.swing.JInternalFrame {
        addForPostGraduateAlDetails();
     }//GEN-LAST:event_BUSINESSActionPerformed
 
-    private void ENGINEERING3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ENGINEERING3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ENGINEERING3ActionPerformed
+    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+        name.setText("");
+        address.setText("");
+        dob.setText("");
+        nic.setText("");
+        email.setText("");
+        phone_number.setText("");
+        institute1.setText("");
+        institute2.setText("");
+        qualification1.setText("");
+        qualification2.setText("");
+        year1.setText("");
+        subject2.setText("");
+        message1.setText("");
+        message2.setText("");
+    }//GEN-LAST:event_clearActionPerformed
 
     private void ENGINEERActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ENGINEERActionPerformed
        findCourseForIdNumber = "EN";
@@ -480,9 +619,11 @@ public class AddPost extends javax.swing.JInternalFrame {
        addForPostGraduateAlDetails();
     }//GEN-LAST:event_ENGINEERActionPerformed
 
-    private void ENGINEERING5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ENGINEERING5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ENGINEERING5ActionPerformed
+    private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
+       StudentDashboard stu = new StudentDashboard();
+       stu.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_backActionPerformed
 
     private void institute1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_institute1ActionPerformed
         // TODO add your handling code here:
@@ -504,9 +645,9 @@ public class AddPost extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_qualification2ActionPerformed
 
-    private void year2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_year2ActionPerformed
+    private void subject2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subject2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_year2ActionPerformed
+    }//GEN-LAST:event_subject2ActionPerformed
 
     private void message1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_message1ActionPerformed
         // TODO add your handling code here:
@@ -540,22 +681,54 @@ public class AddPost extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_qualification1ActionPerformed
 
+    private void semesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semesterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_semesterActionPerformed
+
+    private void subject4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subject4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subject4ActionPerformed
+
+    private void subject3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subject3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subject3ActionPerformed
+
+    private void year6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_year6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_year6ActionPerformed
+
+    private void SEARCHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SEARCHActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SEARCHActionPerformed
+
+    private void subject1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subject1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subject1ActionPerformed
+
+    private void enter1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enter1ActionPerformed
+        addForSelectedSubjects();
+    }//GEN-LAST:event_enter1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BUSINESS;
     private javax.swing.JButton COMPUTING;
     private javax.swing.JButton ENGINEER;
-    private javax.swing.JButton ENGINEERING3;
-    private javax.swing.JButton ENGINEERING5;
+    private javax.swing.JButton SEARCH;
     private javax.swing.JTextField address;
+    private javax.swing.JButton back;
+    private javax.swing.JButton clear;
     private javax.swing.JTextField dob;
     private javax.swing.JTextField email;
+    private javax.swing.JButton enter1;
     private javax.swing.JTextField institute1;
     private javax.swing.JTextField institute2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -572,7 +745,12 @@ public class AddPost extends javax.swing.JInternalFrame {
     private javax.swing.JTextField phone_number;
     private javax.swing.JTextField qualification1;
     private javax.swing.JTextField qualification2;
+    private javax.swing.JTextField semester;
+    private javax.swing.JTextField subject1;
+    private javax.swing.JTextField subject2;
+    private javax.swing.JTextField subject3;
+    private javax.swing.JTextField subject4;
     private javax.swing.JTextField year1;
-    private javax.swing.JTextField year2;
+    private javax.swing.JTextField year6;
     // End of variables declaration//GEN-END:variables
 }
