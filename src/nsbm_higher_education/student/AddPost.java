@@ -4,9 +4,11 @@ import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
 import nsbm_higher_education.DatabaseConnection;
 
 public class AddPost extends javax.swing.JInternalFrame {
+    private String selectedXteream;
     private String findCourseForIdNumber ="";
     private String idNumber;
     Connection connection = null;
@@ -104,6 +106,46 @@ public class AddPost extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
+    
+    
+    /*
+    funtion 01
+    calculate the id number
+    **/
+    void showValues(){
+        PreparedStatement ps;
+        ResultSet rs;
+        try{
+            
+            String query = "select subject_code,subject_name,number_of_credits,fee from subjects where graduate =? and semester =? and subject_code like ?";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setString(1,"pu");
+            ps.setString(2,semester.getText());
+            ps.setString(3,"%"+selectedXteream+"%");
+            rs = ps.executeQuery();
+            
+            DefaultTableModel model = new DefaultTableModel();
+            Object[] column = new Object[4];
+            column[0] = "subject code";
+            column[1] = "subject name";
+            column[2] = "number of credits";
+            column[3] = "fee";
+            model.setColumnIdentifiers(column);
+            Object[] row = new Object[4];
+            while(rs.next()){
+                System.out.println("sub code :"+rs.getString(1)+"sub name: "+rs.getString(2)+"number of credits :"+rs.getInt(3));
+                row[0] = rs.getString(1);
+                row[1] = rs.getString(2);
+                row[2] = rs.getString(3);
+                row[3] = rs.getString(4);
+                model.addRow(row);
+            }
+            table.setModel(model);
+        }
+        catch(SQLException e){
+            System.err.println(e);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -149,6 +191,8 @@ public class AddPost extends javax.swing.JInternalFrame {
         subject1 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         enter1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
 
         jButton1.setText("jButton1");
@@ -223,7 +267,7 @@ public class AddPost extends javax.swing.JInternalFrame {
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("ENTER YOUR SEMESTER NUMBER HERE");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(1000, 420, 300, 15);
+        jLabel9.setBounds(860, 140, 300, 15);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(51, 255, 0));
@@ -351,7 +395,7 @@ public class AddPost extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(subject2);
-        subject2.setBounds(1190, 530, 110, 30);
+        subject2.setBounds(1050, 250, 110, 30);
 
         message1.setBackground(new java.awt.Color(0, 0, 0));
         message1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -468,7 +512,7 @@ public class AddPost extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(semester);
-        semester.setBounds(1070, 460, 110, 30);
+        semester.setBounds(930, 180, 110, 30);
 
         subject4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         subject4.setForeground(new java.awt.Color(255, 0, 0));
@@ -480,7 +524,7 @@ public class AddPost extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(subject4);
-        subject4.setBounds(1190, 580, 110, 30);
+        subject4.setBounds(1050, 300, 110, 30);
 
         subject3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         subject3.setForeground(new java.awt.Color(255, 0, 0));
@@ -492,7 +536,7 @@ public class AddPost extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(subject3);
-        subject3.setBounds(1070, 580, 110, 30);
+        subject3.setBounds(930, 300, 110, 30);
 
         year6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         year6.setForeground(new java.awt.Color(255, 0, 0));
@@ -513,7 +557,7 @@ public class AddPost extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(SEARCH);
-        SEARCH.setBounds(1190, 460, 110, 30);
+        SEARCH.setBounds(1050, 180, 110, 30);
 
         subject1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         subject1.setForeground(new java.awt.Color(255, 0, 0));
@@ -525,14 +569,14 @@ public class AddPost extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(subject1);
-        subject1.setBounds(1070, 530, 110, 30);
+        subject1.setBounds(930, 250, 110, 30);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(51, 255, 0));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("ENTER YOUR SUBJECT CODES HERE");
         jPanel1.add(jLabel13);
-        jLabel13.setBounds(990, 500, 300, 15);
+        jLabel13.setBounds(850, 220, 300, 15);
 
         enter1.setText("ENTER");
         enter1.addActionListener(new java.awt.event.ActionListener() {
@@ -541,7 +585,32 @@ public class AddPost extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(enter1);
-        enter1.setBounds(1120, 630, 140, 40);
+        enter1.setBounds(970, 510, 140, 40);
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "subject_code", "subjec_name", "credits", "fee"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(table);
+
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(820, 370, 470, 110);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 0, 0));
@@ -577,6 +646,7 @@ public class AddPost extends javax.swing.JInternalFrame {
 
     private void COMPUTINGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMPUTINGActionPerformed
        findCourseForIdNumber = "CO";
+       selectedXteream = "CO";
        calculateIdNumber();
        message1.setText("HI! "+name.getText()+" your id number is :");
        message2.setText(idNumber);
@@ -586,6 +656,7 @@ public class AddPost extends javax.swing.JInternalFrame {
 
     private void BUSINESSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BUSINESSActionPerformed
        findCourseForIdNumber = "BU";
+       selectedXteream = "BU";
        calculateIdNumber();
        message1.setText("HI! "+name.getText()+" your id number is :");
        message2.setText(idNumber);
@@ -612,6 +683,7 @@ public class AddPost extends javax.swing.JInternalFrame {
 
     private void ENGINEERActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ENGINEERActionPerformed
        findCourseForIdNumber = "EN";
+       selectedXteream = "EN";
        calculateIdNumber();
        message1.setText("HI! "+name.getText()+" your id number is :");
        message2.setText(idNumber);
@@ -698,7 +770,7 @@ public class AddPost extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_year6ActionPerformed
 
     private void SEARCHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SEARCHActionPerformed
-        // TODO add your handling code here:
+        showValues();
     }//GEN-LAST:event_SEARCHActionPerformed
 
     private void subject1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subject1ActionPerformed
@@ -738,6 +810,7 @@ public class AddPost extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField message1;
     private javax.swing.JTextField message2;
     private javax.swing.JTextField name;
@@ -750,6 +823,7 @@ public class AddPost extends javax.swing.JInternalFrame {
     private javax.swing.JTextField subject2;
     private javax.swing.JTextField subject3;
     private javax.swing.JTextField subject4;
+    private javax.swing.JTable table;
     private javax.swing.JTextField year1;
     private javax.swing.JTextField year6;
     // End of variables declaration//GEN-END:variables
