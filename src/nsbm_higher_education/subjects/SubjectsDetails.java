@@ -40,18 +40,42 @@ public class SubjectsDetails extends javax.swing.JFrame {
         }
     }
     /**
-     *function 1
-     * add function for search subjects 
+     *function 2
+     * add function for delete subjects 
      */
     void deleteSubjects(){
         
         PreparedStatement ps;
         ResultSet rs;
-        int updatingNumber =0;
+        
         try{
             String query = "DELETE FROM `subjects` WHERE  subject_code=?";
             ps = (PreparedStatement) connection.prepareStatement(query);
             ps.setString(1, subject_code.getText());
+            ps.executeUpdate();
+        }
+        catch(NumberFormatException | SQLException e){
+        }
+    }
+    
+    /**
+     *function 2
+     * add function for delete subjects 
+     */
+    void updateSubjects(){
+        
+        PreparedStatement ps;
+        ResultSet rs;
+        
+        try{
+            String query = "UPDATE `subjects` SET `subject_name`=?,`number_of_credits`=?,`fee`=?,`semester`=? WHERE subject_code=?";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setString(1, subject_name.getText());
+            ps.setString(2, number_of_credits.getText());
+            ps.setString(3, fee.getText());
+            ps.setString(4, semester.getText());
+            ps.setString(5, subject_code.getText());
+            
             ps.executeUpdate();
         }
         catch(NumberFormatException | SQLException e){
@@ -293,7 +317,7 @@ public class SubjectsDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_subject_codeActionPerformed
 
     private void UPDATEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UPDATEActionPerformed
-        // TODO add your handling code here:
+        updateSubjects();
     }//GEN-LAST:event_UPDATEActionPerformed
 
     private void BACKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BACKActionPerformed
