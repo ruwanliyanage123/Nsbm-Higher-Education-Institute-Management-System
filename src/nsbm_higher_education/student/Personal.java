@@ -71,7 +71,36 @@ public class Personal extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+     /**
+     *function 3
+     * add function for update students
+     */
+    void updateStudents(String checking){
+        String getFirstTwo = checking.substring(0,2);
+        PreparedStatement ps;
+        ResultSet rs;
+        String query;
+        try{
+            if(getFirstTwo.equals("UN")){
+             query= "UPDATE `undergraduate_basic_details` SET `name`=?,`address`=?,`nic`=?,`phone_number`=?,`email`=?,`dob`=? WHERE id=?";
+            }
+            else{
+                query ="UPDATE `postgraduate_basic_details` SET `name`=?,`address`=?,`nic`=?,`phone_number`=?,`email`=?,`dob`=? WHERE id=?";
+            }
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setString(1, name.getText());
+            ps.setString(2, address.getText());
+            ps.setString(3, nic.getText());
+            ps.setString(4, phone_number.getText());
+            ps.setString(5, email.getText());
+            ps.setString(6, dob.getText());
+            ps.setString(7, id.getText());
+            ps.executeUpdate();
+        }
+        catch(NumberFormatException | SQLException e){
+            e.printStackTrace();
+        }
+    }
 @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -378,7 +407,7 @@ public class Personal extends javax.swing.JFrame {
     }//GEN-LAST:event_clearActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        // TODO add your handling code here:
+        updateStudents(id.getText());
     }//GEN-LAST:event_updateActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
