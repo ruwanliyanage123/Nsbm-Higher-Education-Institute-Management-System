@@ -237,7 +237,33 @@ public class Result extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+     /*
+    funtion 02
+    show assignment marks
+    **/
+    void clearTable(){
+        
+        try{
+            
+            DefaultTableModel model = new DefaultTableModel();
+            Object[] column = new Object[2];
+            column[0] = "assignment";
+            column[1] = "marks";
+            
+            model.setColumnIdentifiers(column);
+            Object[] row = new Object[2];
+            
+                
+                row[0] = "";
+                row[1] = "";
+                model.addRow(row);
+            
+            table.setModel(model);
+        }
+        catch(Exception e){
+            System.err.println(e);
+        }
+    }
     
     
     @SuppressWarnings("unchecked")
@@ -594,6 +620,7 @@ public class Result extends javax.swing.JFrame {
     }//GEN-LAST:event_add_assignmentActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+        clearTable();
         message1.setText("");
         message2.setText("");
         id.setText("");
