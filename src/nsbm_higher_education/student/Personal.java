@@ -47,7 +47,30 @@ public class Personal extends javax.swing.JFrame {
         }
     }
     
-    
+    /**
+     *function 2
+     * add function for delete instructors
+     */
+    void deleteStudents(String checking){
+        String getFirstTwo = checking.substring(0,2);
+        PreparedStatement ps;
+        ResultSet rs;
+        String query;
+        try{
+            if(getFirstTwo.equals("UN")){
+                query = "DELETE FROM `undergraduate_basic_details` WHERE  id=?";
+            }
+            else{
+                query = "DELETE FROM `postgraduate_basic_details` WHERE  id=?";
+            }
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setString(1, id.getText());
+            ps.executeUpdate();
+        }
+        catch(NumberFormatException | SQLException e){
+            e.printStackTrace();
+        }
+    }
     
 @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
