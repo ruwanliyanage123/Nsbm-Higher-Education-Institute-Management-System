@@ -4,7 +4,9 @@ import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
 import nsbm_higher_education.DatabaseConnection;
+import nsbm_higher_education.email.ForSendEmail;
 
 public class Personal extends javax.swing.JFrame {
     Connection connection;
@@ -101,6 +103,73 @@ public class Personal extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    /*
+    funtion 02
+    show exam marks and grades
+    **/
+    void showValues(){
+        PreparedStatement ps;
+        ResultSet rs;
+        try{
+            
+            String query = "select  `subject_code`, `marks`, `grade` from `exam_marks` where id =? ";
+            ps = (PreparedStatement) connection.prepareStatement(query);
+            ps.setString(1,id.getText());
+            
+           
+            rs = ps.executeQuery();
+            
+            DefaultTableModel model = new DefaultTableModel();
+            Object[] column = new Object[3];
+            column[0] = "subject_code";
+            column[1] = "marks";
+            column[2] = "grade";
+            
+            model.setColumnIdentifiers(column);
+            Object[] row = new Object[3];
+            while(rs.next()){
+                
+                row[0] = rs.getString(1);
+                row[1] = rs.getString(2);
+                row[2] = rs.getString(3);
+                model.addRow(row);
+            }
+            table.setModel(model);
+        }
+        catch(SQLException e){
+            System.err.println(e);
+        }
+    }
+    
+    /*
+    funtion 03
+   clear table
+    **/
+    void clearTable(){
+        
+        try{
+            DefaultTableModel model = new DefaultTableModel();
+            Object[] column = new Object[3];
+            column[0] = "subject code";
+            column[1] = "marks";
+            column[2] = "grade";
+            
+            model.setColumnIdentifiers(column);
+            Object[] row = new Object[3];
+            
+                row[0] = "";
+                row[1] = "";
+                row[2] = "";
+                
+                model.addRow(row);
+            
+            table.setModel(model);
+        }
+        catch(Exception e){
+            System.err.println(e);
+        }
+    }
+    
 @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -124,6 +193,10 @@ public class Personal extends javax.swing.JFrame {
         clear = new javax.swing.JButton();
         update = new javax.swing.JButton();
         back = new javax.swing.JButton();
+        send_mail = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
         search = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -140,49 +213,49 @@ public class Personal extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("NAME");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(440, 210, 60, 17);
+        jLabel2.setBounds(430, 130, 60, 17);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("ADDRESS");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(420, 250, 80, 17);
+        jLabel3.setBounds(410, 170, 80, 17);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("NIC");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(440, 290, 60, 17);
+        jLabel4.setBounds(430, 210, 60, 17);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("PHONE NUMBER");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(370, 320, 130, 17);
+        jLabel5.setBounds(360, 240, 130, 17);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("DOB");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(440, 410, 60, 17);
+        jLabel6.setBounds(430, 330, 60, 17);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("ID");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(440, 170, 60, 17);
+        jLabel7.setBounds(430, 90, 60, 17);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("EMAIL");
+        jLabel8.setText("YOUR RESULTS FOR THE PAST EXAMINATION");
         jPanel1.add(jLabel8);
-        jLabel8.setBounds(440, 360, 60, 17);
+        jLabel8.setBounds(560, 360, 330, 17);
 
         name.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         name.setForeground(new java.awt.Color(153, 153, 153));
@@ -196,7 +269,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(name);
-        name.setBounds(540, 200, 370, 30);
+        name.setBounds(530, 120, 370, 30);
 
         address.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         address.setForeground(new java.awt.Color(153, 153, 153));
@@ -210,7 +283,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(address);
-        address.setBounds(540, 240, 370, 30);
+        address.setBounds(530, 160, 370, 30);
 
         nic.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         nic.setForeground(new java.awt.Color(153, 153, 153));
@@ -224,7 +297,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(nic);
-        nic.setBounds(540, 280, 370, 30);
+        nic.setBounds(530, 200, 370, 30);
 
         phone_number.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         phone_number.setForeground(new java.awt.Color(153, 153, 153));
@@ -238,7 +311,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(phone_number);
-        phone_number.setBounds(540, 320, 370, 30);
+        phone_number.setBounds(530, 240, 370, 30);
 
         email.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         email.setForeground(new java.awt.Color(153, 153, 153));
@@ -252,7 +325,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(email);
-        email.setBounds(540, 360, 370, 30);
+        email.setBounds(530, 280, 370, 30);
 
         dob.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         dob.setForeground(new java.awt.Color(153, 153, 153));
@@ -266,7 +339,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(dob);
-        dob.setBounds(540, 400, 370, 30);
+        dob.setBounds(530, 320, 370, 30);
 
         id.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         id.setForeground(new java.awt.Color(153, 153, 153));
@@ -280,7 +353,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(id);
-        id.setBounds(540, 160, 370, 30);
+        id.setBounds(530, 80, 370, 30);
 
         delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.jpg"))); // NOI18N
         delete.setAlignmentY(0.0F);
@@ -290,7 +363,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(delete);
-        delete.setBounds(680, 470, 100, 100);
+        delete.setBounds(670, 600, 100, 100);
 
         clear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clear.jpg"))); // NOI18N
         clear.setAlignmentY(0.0F);
@@ -300,7 +373,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(clear);
-        clear.setBounds(720, 590, 100, 100);
+        clear.setBounds(910, 600, 100, 100);
 
         update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Untitled-8.jpg"))); // NOI18N
         update.setAlignmentY(0.0F);
@@ -310,7 +383,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(update);
-        update.setBounds(540, 470, 100, 100);
+        update.setBounds(550, 600, 100, 100);
 
         back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/BASK.jpg"))); // NOI18N
         back.setAlignmentY(0.0F);
@@ -320,7 +393,40 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(back);
-        back.setBounds(590, 590, 100, 100);
+        back.setBounds(420, 600, 100, 100);
+
+        send_mail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/email.jpg"))); // NOI18N
+        send_mail.setAlignmentY(0.0F);
+        send_mail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                send_mailActionPerformed(evt);
+            }
+        });
+        jPanel1.add(send_mail);
+        send_mail.setBounds(670, 490, 100, 100);
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "              subject_code", "              marks", "              grade"
+            }
+        ));
+        jScrollPane1.setViewportView(table);
+
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(480, 380, 452, 100);
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("EMAIL");
+        jPanel1.add(jLabel9);
+        jLabel9.setBounds(430, 280, 60, 17);
 
         search.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.jpg"))); // NOI18N
         search.setAlignmentY(0.0F);
@@ -330,7 +436,7 @@ public class Personal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(search);
-        search.setBounds(810, 470, 100, 100);
+        search.setBounds(790, 600, 100, 100);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/reuslting.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -397,6 +503,7 @@ public class Personal extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+                clearTable();
                 id.setText("");
                 name.setText("");
                 address.setText("");
@@ -416,8 +523,19 @@ public class Personal extends javax.swing.JFrame {
        this.dispose();
     }//GEN-LAST:event_backActionPerformed
 
+    private void send_mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_send_mailActionPerformed
+       SendEmail email = new SendEmail();
+       String a = "primehit2018@gmail.com";
+       String b = "result";
+       String c = "your result is A B C D";
+       String d = "primehit2018@gmail.com";
+       String e = "0772308519";
+       email.send(a,b,c,d,e);
+    }//GEN-LAST:event_send_mailActionPerformed
+
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         searchStudents(id.getText());
+        showValues();
     }//GEN-LAST:event_searchActionPerformed
 
     /**
@@ -472,11 +590,15 @@ public class Personal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField name;
     private javax.swing.JTextField nic;
     private javax.swing.JTextField phone_number;
     private javax.swing.JButton search;
+    private javax.swing.JButton send_mail;
+    private javax.swing.JTable table;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }
